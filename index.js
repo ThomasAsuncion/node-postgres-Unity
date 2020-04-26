@@ -71,3 +71,23 @@ showAllAccounts();
 deleteAccount("TestUser1");
 showAllAccounts();
 
+
+/**
+ *  This promise will chain things together because it is async.for as long as it is successful it will 
+ *      keep call the next 'then' in the .then.then.then call. Once it fails a call or runs out of 'thens'
+ *      it will end. Once a query is executed it defer to the next 'then' where you can access the results.
+ *  The return value of the querires will always be returned in an object called 'Results'.
+ *      Results have have different properties than can be accessed such as '.rows', '.rowCount', .oid', etc.
+ *      The rows property is an array that will return all the rows
+ * 
+ **/ 
+
+// database.connect()
+// .then( () => console.log("Connected succesfully!") )
+// .then( () => database.query("BEGIN") )
+// .then( () => database.query("INSERT INTO accounts(username, user_password) VALUES ($1, $2)", ['SomeRandomUser', 'NotTheBestPassword123']) ) // This is a single atomic transaction where we are inserting one thing on this run, should we want to insert multiple things we need to make a BEGIN and COMMIT transaction (added it in to the top abd bottom to show how to do it)
+// .then( () => database.query("COMMIT") )
+// .then( () => database.query("SELECT * FROM accounts where username = $1", ["SomeRandomUser"]) ) // The "$1" is a parameter that will take the value at the first index of the array after the comma - This helps prevent SQL Injection
+// .then( results => console.table(results.rows))
+// .catch( error => console.log(error))
+// .finally( () => database.end());
