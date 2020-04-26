@@ -19,7 +19,7 @@ const database = new Client({
 });
 
 /**
- * Attempts to create a connection with the PostgreSQL Database on specified port
+ * Creates a connection with the PostgreSQL Database - MUST establish a connection before querying
  */
 const createConnection = () => {
     database.connect()
@@ -28,11 +28,11 @@ const createConnection = () => {
 } 
 
 /**
- * Ends the connection to the database, should always call this once all transactions are done
+ * Ends the connection to the database - should always call this once all transactions are done
  */
 const endConnection = () => {
     database.end()
-    .finally(console.log("Successfully disconnected from database."));
+    .finally(console.log("Successfully disconnected from " + DATABASE + "."));
 }
 
 /**
@@ -43,7 +43,7 @@ const endConnection = () => {
 const createAccount = (username, userPassword) => {
     database.query("INSERT INTO accounts(username, user_password) VALUES ($1, $2)", [username, userPassword])
     .catch( (error) => console.log(error) )
-    .finally ( () => console.log("Successfully added user: " + username + " and password: " + userPassword + " to " + DATABASE + " ."));
+    .finally ( () => console.log("Successfully added user: " + username + " and password: " + userPassword + " to " + DATABASE + "."));
 }
 
 /**
@@ -54,3 +54,20 @@ const showAllAccounts = () => {
     .then(results => console.table(results.rows))   // results.rows returns an array of our query results 
     .catch( (error) => console.log(error) )
 }
+
+/**
+ * Removes a specified user from the accounts table based on the given username
+ * @param {VARCHAR(50)} username 
+ */
+const deleteAccount = (username) => {
+    database.query("DELETE FROM accounts WHERE username = $1", [username])
+    .catch( (error) => console.log(error) )
+    .finally( () => console.log("Successfully removed user: " + username + " from " + DATABASE + "."));
+}
+
+createConnection();
+createAccount("TestUser1", "pass1234");
+showAllAccounts();
+deleteAccount("TestUser1");
+showAllAccounts();
+
