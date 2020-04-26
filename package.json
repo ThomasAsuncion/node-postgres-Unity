@@ -1,0 +1,22 @@
+{
+  "name": "postgres-unity",
+  "version": "1.0.0",
+  "description": "Making an API with node-postgres and connecting it with a Unity project.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThomasAsuncion/node-postgres-Unity.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ThomasAsuncion/node-postgres-Unity/issues"
+  },
+  "homepage": "https://github.com/ThomasAsuncion/node-postgres-Unity#readme",
+  "dependencies": {
+    "pg": "^8.0.3"
+  }
+}
