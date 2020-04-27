@@ -4,7 +4,7 @@
   "description": "Making an API with node-postgres and connecting it with a Unity project.",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "test": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/ThomasAsuncion/node-postgres-Unity#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "pg": "^8.0.3"
   }
 }
