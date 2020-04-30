@@ -52,9 +52,9 @@ server.post("/accounts", async(request, response) => {
     let results = {}; // Creates an empty JSON object to hold our results status (which is pretty much only true or false)
 
     try {
-        const requestJSON = request.body;                                      // Body will be JSON but will not be parsed by express unless told to - it's told to on line 4
-        await createAccount(requestJSON.username, requestJSON.userPassword);   // the parameter being sent are coming from the browser console (IMPORTANT: the .username & .userPassword need to be named the same when doing the command in browser)
-        results.success = true;
+        const requestedJSON = request.body;                                        // Body will be JSON but will not be parsed by express unless told to - it's told to on line 4
+        await createAccount(requestedJSON.username, requestedJSON.userPassword);   // the parameter being sent are coming from the browser console (IMPORTANT: the .username & .userPassword need to be named the same when doing the command in browser)
+        results.success = true;                                                    // Just lets the system user know that it successfully completed its action
         
     }
     catch (error) {
@@ -78,9 +78,9 @@ server.post("/accounts", async(request, response) => {
     let results = {}; // Creates an empty JSON object to hold our results (which is pretty much only true or false)
 
     try {
-        const requestJSON = request.body
-        await deleteAccount(requestJSON.username);  // the parameter being sent are coming from the browser console (IMPORTANT: the .username need same when doing the command in browser)
-        results.success = true;
+        const requestedJSON = request.body
+        await deleteAccount(requestedJSON.username);  // the parameter being sent are coming from the browser console (IMPORTANT: the .username need same when doing the command in browser)
+        results.success = true;                       // Just lets the system user know that it successfully completed its action
     } 
     catch (error) {
         results.success=false;
