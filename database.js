@@ -67,11 +67,14 @@ const createAccountAndPerson = async(username, userPassword) => {
         await database.query("INSERT INTO accounts(username, user_password) VALUES ($1, $2)", [username, userPassword]); // Insert the user in with the passed params
         console.log(`Succesfully added user: ${username} with the password: ${userPassword} to ${DATABASE}.`);           // Logs out that user has been inserted
         
-        await database.query("SELECT account_id FROM Accounts WHERE username=$1", [username]);                           // Query for the account_id that has the given username
-        accountId = results.rows;                                                                                        // Store the query result in accountId
+        var results = await database.query("SELECT account_id FROM Accounts WHERE username=$1", [username]);  // Query for the account_id that has the given username
+        
+        // Store the query result which should just be the specified person with the given username (there should ONLY be one result that's why it's array index 0 to get the individual element) 
+        // The extra [] Accesses the query result's JSON Object's value 'user_id'
+        accountId = results.rows[0]["account_id"];   
         console.log(accountId);
 
-        createPerson(accountId, firstName, lastName);
+        //createPerson(accountId, firstName, lastName);
         return true;
     }
     catch(error) {
@@ -146,3 +149,4 @@ module.exports = {
  * Test local playground here 
  */
 createConnection()
+createAccountAndPerson("aasdfsdfsdfavvbb", "Fitokn123");
