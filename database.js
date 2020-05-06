@@ -31,7 +31,7 @@ const createConnection = async() => {
         return true;
     } 
     catch (error) {
-        console.error(`Failed to connect ${e}`);
+        console.error(`Failed to connect ${error}`);
 
         return false;
     }
