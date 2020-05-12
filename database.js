@@ -1,4 +1,5 @@
-const { Client } = require('pg'); // Library ('pg') needed to have Postgres, make sure to npm install pg in the command line
+const { Client } = require('pg');       // Library ('pg') needed to have Postgres, make sure to npm install pg in the command line
+const readline = require('readline');   // Library ('readline') needed to take in user input from the console
 
 /**
  * Fills out key information regarding our database and how to connect to it
@@ -18,6 +19,12 @@ const database = new Client({
     host: HOST,    
     port: PORT,             
     database: DATABASE
+});
+
+// Creates the variable that has the interface for taking in user input - not implemented yet (since this is a REST API input is taken from web)
+const userInput = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
 });
 
 /**
@@ -59,22 +66,23 @@ const endConnection = async() => {
  * @param {VARCHAR(50)} username 
  * @param {VARCHAR(50)} userPassword 
  */
-const createAccountAndPerson = async(username, userPassword) => {
+const createAccountAndPerson = async(username, userPassword, firstName, lastName) => {
     
     var accountId;
     
     try {
-        await database.query("INSERT INTO accounts(username, user_password) VALUES ($1, $2)", [username, userPassword]); // Insert the user in with the passed params
-        console.log(`Succesfully added user: ${username} with the password: ${userPassword} to ${DATABASE}.`);           // Logs out that user has been inserted
+        await database.query("INSERT INTO accounts(username, password) VALUES ($1, $2)", [username, userPassword]); // Insert the user in with the passed params
+        console.log(`Succesfully added user: ${username} with the password: ${userPassword} to ${DATABASE}.`); // Logs out that user has been inserted
         
-        var results = await database.query("SELECT account_id FROM Accounts WHERE username=$1", [username]);  // Query for the account_id that has the given username
+        var results = await database.query("SELECT account_id FROM Accounts WHERE username=$1 LIMIT 1", [username]);  // Query for the account_id that has the given username
         
         // Store the query result which should just be the specified person with the given username (there should ONLY be one result that's why it's array index 0 to get the individual element) 
-        // The extra [] Accesses the query result's JSON Object's value 'user_id'
-        accountId = results.rows[0]["account_id"];   
+        accountId = results.rows[0].account_id; // Get's the JSON object's value at account_id: by specifying the value of the object wanted after the '.' 
         console.log(accountId);
 
-        //createPerson(accountId, firstName, lastName);
+        await database.query("INSERT INTO personinfo(account_id, first_name, last_name) VALUES ($1, $2, $3)", [accountId, firstName, lastName]);
+        console.log(`Succesfully added person: ${firstName} to ${DATABASE}.`);
+
         return true;
     }
     catch(error) {
@@ -149,4 +157,4 @@ module.exports = {
  * Test local playground here 
  */
 createConnection()
-createAccountAndPerson("aasdfsdfsdfavvbb", "Fitokn123");
+createAccountAndPerson("Ventirug", "1234567", "Mizzro", "Dizzro");
